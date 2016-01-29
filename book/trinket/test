@@ -5,3 +5,30 @@
 line 1
 line 2
 ~~~~
+
+
+~~~~ {.python trinket}
+    >>> good-bye
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    NameError: name 'good' is not defined
+    >>> if you don't mind, I need to leave
+      File "<stdin>", line 1
+        if you don't mind, I need to leave
+                 ^
+    SyntaxError: invalid syntax
+    >>> quit()
+~~~~
+
+~~~~ {.python trinket}
+>>> good-bye
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'good' is not defined
+>>> if you don't mind, I need to leave
+  File "<stdin>", line 1
+    if you don't mind, I need to leave
+             ^
+SyntaxError: invalid syntax
+>>> quit()
+~~~~

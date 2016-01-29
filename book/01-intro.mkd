@@ -340,7 +340,7 @@ Before we leave our first conversation with the Python interpreter, you
 should probably know the proper way to say "good-bye" when interacting
 with the inhabitants of Planet Python:
 
-~~~~ {.python}
+~~~~ {.python trinket}
     >>> good-bye
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>

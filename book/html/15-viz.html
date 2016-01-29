@@ -14,23 +14,10 @@
 <div class="col-3-12">
 <div class="content">            
      <ul>
-     <li><a href="#lists">Lists</a><ul>
-     <li><a href="#a-list-is-a-sequence">A list is a sequence</a></li>
-     <li><a href="#lists-are-mutable">Lists are mutable</a></li>
-     <li><a href="#traversing-a-list">Traversing a list</a></li>
-     <li><a href="#list-operations">List operations</a></li>
-     <li><a href="#list-slices">List slices</a></li>
-     <li><a href="#list-methods">List methods</a></li>
-     <li><a href="#deleting-elements">Deleting elements</a></li>
-     <li><a href="#lists-and-functions">Lists and functions</a></li>
-     <li><a href="#lists-and-strings">Lists and strings</a></li>
-     <li><a href="#parsing-lines">Parsing lines</a></li>
-     <li><a href="#objects-and-values">Objects and values</a></li>
-     <li><a href="#aliasing">Aliasing</a></li>
-     <li><a href="#list-arguments">List arguments</a></li>
-     <li><a href="#debugging">Debugging</a></li>
-     <li><a href="#glossary">Glossary</a></li>
-     <li><a href="#exercises">Exercises</a></li>
+     <li><a href="#visualizing-data">Visualizing data</a><ul>
+     <li><a href="#building-a-google-map-from-geocoded-data">Building a Google map from geocoded data</a></li>
+     <li><a href="#visualizing-networks-and-interconnections">Visualizing networks and interconnections</a></li>
+     <li><a href="#visualizing-mail-data">Visualizing mail data</a></li>
      </ul></li>
      </ul>
 </div>
@@ -38,541 +25,224 @@
 <div class="col-9-12">
 <div class="content"> 
 
-<h1 id="lists">Lists</h1>
+<h1 id="visualizing-data">Visualizing data</h1>
+<p>So far we have been learning the Python language and then learning how to use Python, the network, and databases to manipulate data.</p>
+<p>In this chapter, we take a look at three complete applications that bring all of these things together to manage and visualize data. You might use these applications as sample code to help get you started in solving a real-world problem.</p>
+<p>Each of the applications is a ZIP file that you can download and extract onto your computer and execute.</p>
+<h2 id="building-a-google-map-from-geocoded-data">Building a Google map from geocoded data</h2>
 <p> </p>
-<h2 id="a-list-is-a-sequence">A list is a sequence</h2>
-<p>Like a string, a <em>list</em> is a sequence of values. In a string, the values are characters; in a list, they can be any type. The values in list are called <em>elements</em> or sometimes <em>items</em>.</p>
-<p>  </p>
-<p>There are several ways to create a new list; the simplest is to enclose the elements in square brackets (<code>[</code> and <code>]</code>):</p>
-<pre><code>[10, 20, 30, 40]
-['crunchy frog', 'ram bladder', 'lark vomit']</code></pre>
-<p>The first example is a list of four integers. The second is a list of three strings. The elements of a list don't have to be the same type. The following list contains a string, a float, an integer, and (lo!) another list:</p>
-<pre><code>['spam', 2.0, 5, [10, 20]]</code></pre>
-<p>A list within another list is <em>nested</em>.</p>
-<p> </p>
-<p>A list that contains no elements is called an empty list; you can create one with empty brackets, <code>[]</code>.</p>
-<p> </p>
-<p>As you might expect, you can assign list values to variables:</p>
-<pre><code>&gt;&gt;&gt; cheeses = ['Cheddar', 'Edam', 'Gouda']
-&gt;&gt;&gt; numbers = [17, 123]
-&gt;&gt;&gt; empty = []
-&gt;&gt;&gt; print(cheeses, numbers, empty)
-['Cheddar', 'Edam', 'Gouda'] [17, 123] []</code></pre>
-<p></p>
-<h2 id="lists-are-mutable">Lists are mutable</h2>
-<p>     </p>
-<p>The syntax for accessing the elements of a list is the same as for accessing the characters of a string—the bracket operator. The expression inside the brackets specifies the index. Remember that the indices start at 0:</p>
-<pre><code>&gt;&gt;&gt; print(cheeses[0])
-Cheddar</code></pre>
-<p>Unlike strings, lists are mutable because you can change the order of items in a list or reassign an item in a list. When the bracket operator appears on the left side of an assignment, it identifies the element of the list that will be assigned.</p>
-<p></p>
-<pre><code>&gt;&gt;&gt; numbers = [17, 123]
-&gt;&gt;&gt; numbers[1] = 5
-&gt;&gt;&gt; print(numbers)
-[17, 5]</code></pre>
-<p>The one-eth element of <code>numbers</code>, which used to be 123, is now 5.</p>
-<p> </p>
-<p>You can think of a list as a relationship between indices and elements. This relationship is called a <em>mapping</em>; each index &quot;maps to&quot; one of the elements.</p>
-<p> </p>
-<p>List indices work the same way as string indices:</p>
-<ul>
-<li><p>Any integer expression can be used as an index.</p></li>
-<li><p>If you try to read or write an element that does not exist, you get an <code>IndexError</code>.</p></li>
-</ul>
-<p> </p>
-<ul>
-<li>If an index has a negative value, it counts backward from the end of the list.</li>
-</ul>
-<p>    </p>
-<p>The <code>in</code> operator also works on lists.</p>
-<pre><code>&gt;&gt;&gt; cheeses = ['Cheddar', 'Edam', 'Gouda']
-&gt;&gt;&gt; 'Edam' in cheeses
-True
-&gt;&gt;&gt; 'Brie' in cheeses
-False</code></pre>
-<h2 id="traversing-a-list">Traversing a list</h2>
-<p>    </p>
-<p>The most common way to traverse the elements of a list is with a <code>for</code> loop. The syntax is the same as for strings:</p>
-<pre><code>for cheese in cheeses:
-    print(cheese)</code></pre>
-<p>This works well if you only need to read the elements of the list. But if you want to write or update the elements, you need the indices. A common way to do that is to combine the functions <code>range</code> and <code>len</code>:</p>
-<p> </p>
-<pre><code>for i in range(len(numbers)):
-    numbers[i] = numbers[i] * 2</code></pre>
-<p>This loop traverses the list and updates each element. <code>len</code> returns the number of elements in the list. <code>range</code> returns a list of indices from 0 to <span class="math inline"><em>n</em> − 1</span>, where <span class="math inline"><em>n</em></span> is the length of the list. Each time through the loop, <code>i</code> gets the index of the next element. The assignment statement in the body uses <code>i</code> to read the old value of the element and to assign the new value.</p>
-<p> </p>
-<p>A <code>for</code> loop over an empty list never executes the body:</p>
-<pre><code>for x in empty:
-    print('This never happens.')</code></pre>
-<p>Although a list can contain another list, the nested list still counts as a single element. The length of this list is four:</p>
-<p> </p>
-<pre><code>['spam', 1, ['Brie', 'Roquefort', 'Pol le Veq'], [1, 2, 3]]</code></pre>
-<h2 id="list-operations">List operations</h2>
-<p></p>
-<p>The <code>+</code> operator concatenates lists:</p>
-<p> </p>
-<pre><code>&gt;&gt;&gt; a = [1, 2, 3]
-&gt;&gt;&gt; b = [4, 5, 6]
-&gt;&gt;&gt; c = a + b
-&gt;&gt;&gt; print(c)
-[1, 2, 3, 4, 5, 6]</code></pre>
-<p>Similarly, the operator repeats a list a given number of times:</p>
-<p> </p>
-<pre><code>&gt;&gt;&gt; [0] * 4
-[0, 0, 0, 0]
-&gt;&gt;&gt; [1, 2, 3] * 3
-[1, 2, 3, 1, 2, 3, 1, 2, 3]</code></pre>
-<p>The first example repeats four times. The second example repeats the list three times.</p>
-<h2 id="list-slices">List slices</h2>
-<p>    </p>
-<p>The slice operator also works on lists:</p>
-<pre><code>&gt;&gt;&gt; t = ['a', 'b', 'c', 'd', 'e', 'f']
-&gt;&gt;&gt; t[1:3]
-['b', 'c']
-&gt;&gt;&gt; t[:4]
-['a', 'b', 'c', 'd']
-&gt;&gt;&gt; t[3:]
-['d', 'e', 'f']</code></pre>
-<p>If you omit the first index, the slice starts at the beginning. If you omit the second, the slice goes to the end. So if you omit both, the slice is a copy of the whole list.</p>
-<p>  </p>
-<pre><code>&gt;&gt;&gt; t[:]
-['a', 'b', 'c', 'd', 'e', 'f']</code></pre>
-<p>Since lists are mutable, it is often useful to make a copy before performing operations that fold, spindle, or mutilate lists.</p>
-<p></p>
-<p>A slice operator on the left side of an assignment can update multiple elements:</p>
-<p> </p>
-<pre><code>&gt;&gt;&gt; t = ['a', 'b', 'c', 'd', 'e', 'f']
-&gt;&gt;&gt; t[1:3] = ['x', 'y']
-&gt;&gt;&gt; print(t)
-['a', 'x', 'y', 'd', 'e', 'f']</code></pre>
-<h2 id="list-methods">List methods</h2>
-<p> </p>
-<p>Python provides methods that operate on lists. For example, <code>append</code> adds a new element to the end of a list:</p>
-<p> </p>
-<pre><code>&gt;&gt;&gt; t = ['a', 'b', 'c']
-&gt;&gt;&gt; t.append('d')
-&gt;&gt;&gt; print(t)
-['a', 'b', 'c', 'd']</code></pre>
-<p><code>extend</code> takes a list as an argument and appends all of the elements:</p>
-<p> </p>
-<pre><code>&gt;&gt;&gt; t1 = ['a', 'b', 'c']
-&gt;&gt;&gt; t2 = ['d', 'e']
-&gt;&gt;&gt; t1.extend(t2)
-&gt;&gt;&gt; print(t1)
-['a', 'b', 'c', 'd', 'e']</code></pre>
-<p>This example leaves <code>t2</code> unmodified.</p>
-<p><code>sort</code> arranges the elements of the list from low to high:</p>
-<p> </p>
-<pre><code>&gt;&gt;&gt; t = ['d', 'c', 'e', 'b', 'a']
-&gt;&gt;&gt; t.sort()
-&gt;&gt;&gt; print(t)
-['a', 'b', 'c', 'd', 'e']</code></pre>
-<p>Most list methods are void; they modify the list and return <code>None</code>. If you accidentally write <code>t = t.sort()</code>, you will be disappointed with the result.</p>
-<p>   </p>
-<h2 id="deleting-elements">Deleting elements</h2>
-<p> </p>
-<p>There are several ways to delete elements from a list. If you know the index of the element you want, you can use <code>pop</code>:</p>
-<p> </p>
-<pre><code>&gt;&gt;&gt; t = ['a', 'b', 'c']
-&gt;&gt;&gt; x = t.pop(1)
-&gt;&gt;&gt; print(t)
-['a', 'c']
-&gt;&gt;&gt; print(x)
-b</code></pre>
-<p><code>pop</code> modifies the list and returns the element that was removed. If you don't provide an index, it deletes and returns the last element.</p>
-<p>If you don't need the removed value, you can use the <code>del</code> operator:</p>
-<p> </p>
-<pre><code>&gt;&gt;&gt; t = ['a', 'b', 'c']
-&gt;&gt;&gt; del t[1]
-&gt;&gt;&gt; print(t)
-['a', 'c']</code></pre>
-<p>If you know the element you want to remove (but not the index), you can use <code>remove</code>:</p>
-<p> </p>
-<pre><code>&gt;&gt;&gt; t = ['a', 'b', 'c']
-&gt;&gt;&gt; t.remove('b')
-&gt;&gt;&gt; print(t)
-['a', 'c']</code></pre>
-<p>The return value from <code>remove</code> is <code>None</code>.</p>
-<p> </p>
-<p>To remove more than one element, you can use <code>del</code> with a slice index:</p>
-<pre><code>&gt;&gt;&gt; t = ['a', 'b', 'c', 'd', 'e', 'f']
-&gt;&gt;&gt; del t[1:5]
-&gt;&gt;&gt; print(t)
-['a', 'f']</code></pre>
-<p>As usual, the slice selects all the elements up to, but not including, the second index.</p>
-<h2 id="lists-and-functions">Lists and functions</h2>
-<p>There are a number of built-in functions that can be used on lists that allow you to quickly look through a list without writing your own loops:</p>
-<pre><code>&gt;&gt;&gt; nums = [3, 41, 12, 9, 74, 15]
-&gt;&gt;&gt; print(len(nums))
-6
-&gt;&gt;&gt; print(max(nums))
-74
-&gt;&gt;&gt; print(min(nums))
-3
-&gt;&gt;&gt; print(sum(nums))
-154
-&gt;&gt;&gt; print(sum(nums)/len(nums))
-25</code></pre>
-<p>The <code>sum()</code> function only works when the list elements are numbers. The other functions (<code>max()</code>, <code>len()</code>, etc.) work with lists of strings and other types that can be comparable.</p>
-<p>We could rewrite an earlier program that computed the average of a list of numbers entered by the user using a list.</p>
-<p>First, the program to compute an average without a list:</p>
-<pre><code>total = 0
-count = 0
-while ( True ) :
-    inp = input('Enter a number: ')
-    if inp == 'done' : break
-    value = float(inp)
-    total = total + value
-    count = count + 1
-
-average = total / count
-print('Average:', average)</code></pre>
-<p>In this program, we have <code>count</code> and <code>total</code> variables to keep the number and running total of the user's numbers as we repeatedly prompt the user for a number.</p>
-<p>We could simply remember each number as the user entered it and use built-in functions to compute the sum and count at the end.</p>
-<pre><code>numlist = list()
-while ( True ) :
-    inp = input('Enter a number: ')
-    if inp == 'done' : break
-    value = float(inp)
-    numlist.append(value)
-
-average = sum(numlist) / len(numlist)
-print('Average:', average)</code></pre>
-<p>We make an empty list before the loop starts, and then each time we have a number, we append it to the list. At the end of the program, we simply compute the sum of the numbers in the list and divide it by the count of the numbers in the list to come up with the average.</p>
-<h2 id="lists-and-strings">Lists and strings</h2>
-<p>  </p>
-<p>A string is a sequence of characters and a list is a sequence of values, but a list of characters is not the same as a string. To convert from a string to a list of characters, you can use <code>list</code>:</p>
-<p> </p>
-<pre><code>&gt;&gt;&gt; s = 'spam'
-&gt;&gt;&gt; t = list(s)
-&gt;&gt;&gt; print(t)
-['s', 'p', 'a', 'm']</code></pre>
-<p>Because <code>list</code> is the name of a built-in function, you should avoid using it as a variable name. I also avoid the letter <code>l</code> because it looks too much like the number <code>1</code>. So that's why I use <code>t</code>.</p>
-<p>The <code>list</code> function breaks a string into individual letters. If you want to break a string into words, you can use the <code>split</code> method:</p>
-<p> </p>
-<pre><code>&gt;&gt;&gt; s = 'pining for the fjords'
-&gt;&gt;&gt; t = s.split()
-&gt;&gt;&gt; print(t)
-['pining', 'for', 'the', 'fjords']
-&gt;&gt;&gt; print(t[2])
-the</code></pre>
-<p>Once you have used <code>split</code> to break the string into a list of words, you can use the index operator (square bracket) to look at a particular word in the list.</p>
-<p>You can call <code>split</code> with an optional argument called a <em>delimiter</em> that specifies which characters to use as word boundaries. The following example uses a hyphen as a delimiter:</p>
-<p>  </p>
-<pre><code>&gt;&gt;&gt; s = 'spam-spam-spam'
-&gt;&gt;&gt; delimiter = '-'
-&gt;&gt;&gt; s.split(delimiter)
-['spam', 'spam', 'spam']</code></pre>
-<p><code>join</code> is the inverse of <code>split</code>. It takes a list of strings and concatenates the elements. <code>join</code> is a string method, so you have to invoke it on the delimiter and pass the list as a parameter:</p>
-<p>  </p>
-<pre><code>&gt;&gt;&gt; t = ['pining', 'for', 'the', 'fjords']
-&gt;&gt;&gt; delimiter = ' '
-&gt;&gt;&gt; delimiter.join(t)
-'pining for the fjords'</code></pre>
-<p>In this case the delimiter is a space character, so <code>join</code> puts a space between words. To concatenate strings without spaces, you can use the empty string, &quot;&quot;, as a delimiter.</p>
-<p> </p>
-<h2 id="parsing-lines">Parsing lines</h2>
-<p>Usually when we are reading a file we want to do something to the lines other than just printing the whole line. Often we want to find the &quot;interesting lines&quot; and then <em>parse</em> the line to find some interesting <em>part</em> of the line. What if we wanted to print out the day of the week from those lines that start with &quot;From &quot;?</p>
-<p><code>From stephen.marquard@uct.ac.za </code><em><code> Sat</code></em><code> Jan  5 09:14:16 2008</code></p>
-<p>The <code>split</code> method is very effective when faced with this kind of problem. We can write a small program that looks for lines where the line starts with &quot;From &quot;, <code>split</code> those lines, and then print out the third word in the line:</p>
-<pre><code>fhand = open('mbox-short.txt')
-for line in fhand:
-    line = line.rstrip()
-    if not line.startswith('From ') : continue
-    words = line.split()
-    print(words[2])</code></pre>
-<p>Here we also use the contracted form of the <code>if</code> statement where we put the <code>continue</code> on the same line as the <code>if</code>. This contracted form of the <code>if</code> functions the same as if the <code>continue</code> were on the next line and indented.</p>
-<p>The program produces the following output:</p>
-<pre><code>Sat
-Fri
-Fri
-Fri
-    ...</code></pre>
-<p>Later, we will learn increasingly sophisticated techniques for picking the lines to work on and how we pull those lines apart to find the exact bit of information we are looking for.</p>
-<h2 id="objects-and-values">Objects and values</h2>
-<p> </p>
-<p>If we execute these assignment statements:</p>
-<pre><code>a = 'banana'
-b = 'banana'</code></pre>
-<p>we know that <code>a</code> and <code>b</code> both refer to a string, but we don't know whether they refer to the <em>same</em> string. There are two possible states:</p>
-<p></p>
+<p>In this project, we are using the Google geocoding API to clean up some user-entered geographic locations of university names and then placing the data on a Google map.</p>
 <div class="figure">
 <img src="data:image/svg+xml;base64," alt="image" />
 <p class="caption">image</p>
 </div>
-<p>In one case, <code>a</code> and <code>b</code> refer to two different objects that have the same value. In the second case, they refer to the same object.</p>
-<p> </p>
-<p>To check whether two variables refer to the same object, you can use the <code>is</code> operator.</p>
-<pre><code>&gt;&gt;&gt; a = 'banana'
-&gt;&gt;&gt; b = 'banana'
-&gt;&gt;&gt; a is b
-True</code></pre>
-<p>In this example, Python only created one string object, and both <code>a</code> and <code>b</code> refer to it.</p>
-<p>But when you create two lists, you get two objects:</p>
-<pre><code>&gt;&gt;&gt; a = [1, 2, 3]
-&gt;&gt;&gt; b = [1, 2, 3]
-&gt;&gt;&gt; a is b
-False</code></pre>
-<p>In this case we would say that the two lists are <em>equivalent</em>, because they have the same elements, but not <em>identical</em>, because they are not the same object. If two objects are identical, they are also equivalent, but if they are equivalent, they are not necessarily identical.</p>
-<p> </p>
-<p>Until now, we have been using &quot;object&quot; and &quot;value&quot; interchangeably, but it is more precise to say that an object has a value. If you execute <code>a = [1,2,3]</code>, <code>a</code> refers to a list object whose value is a particular sequence of elements. If another list has the same elements, we would say it has the same value.</p>
-<p> </p>
-<h2 id="aliasing">Aliasing</h2>
-<p> </p>
-<p>If <code>a</code> refers to an object and you assign <code>b = a</code>, then both variables refer to the same object:</p>
-<pre><code>&gt;&gt;&gt; a = [1, 2, 3]
-&gt;&gt;&gt; b = a
-&gt;&gt;&gt; b is a
-True</code></pre>
-<p>The association of a variable with an object is called a <em>reference</em>. In this example, there are two references to the same object.</p>
+<p>To get started, download the application from:</p>
+<p><a href="www.pythonlearn.com/code3/geodata.zip" class="uri">www.pythonlearn.com/code3/geodata.zip</a></p>
+<p>The first problem to solve is that the free Google geocoding API is rate-limited to a certain number of requests per day. If you have a lot of data, you might need to stop and restart the lookup process several times. So we break the problem into two phases.</p>
 <p></p>
-<p>An object with more than one reference has more than one name, so we say that the object is <em>aliased</em>.</p>
-<p></p>
-<p>If the aliased object is mutable, changes made with one alias affect the other:</p>
-<pre><code>&gt;&gt;&gt; b[0] = 17
-&gt;&gt;&gt; print(a)
-[17, 2, 3]</code></pre>
-<p>Although this behavior can be useful, it is error-prone. In general, it is safer to avoid aliasing when you are working with mutable objects.</p>
-<p></p>
-<p>For immutable objects like strings, aliasing is not as much of a problem. In this example:</p>
-<pre><code>a = 'banana'
-b = 'banana'</code></pre>
-<p>it almost never makes a difference whether <code>a</code> and <code>b</code> refer to the same string or not.</p>
-<h2 id="list-arguments">List arguments</h2>
-<p>    </p>
-<p>When you pass a list to a function, the function gets a reference to the list. If the function modifies a list parameter, the caller sees the change. For example, <code>delete_head</code> removes the first element from a list:</p>
-<pre><code>def delete_head(t):
-    del t[0]</code></pre>
-<p>Here's how it is used:</p>
-<pre><code>&gt;&gt;&gt; letters = ['a', 'b', 'c']
-&gt;&gt;&gt; delete_head(letters)
-&gt;&gt;&gt; print(letters)
-['b', 'c']</code></pre>
-<p>The parameter <code>t</code> and the variable <code>letters</code> are aliases for the same object.</p>
-<p>It is important to distinguish between operations that modify lists and operations that create new lists. For example, the <code>append</code> method modifies a list, but the <code>+</code> operator creates a new list:</p>
-<p>   </p>
-<pre><code>&gt;&gt;&gt; t1 = [1, 2]
-&gt;&gt;&gt; t2 = t1.append(3)
-&gt;&gt;&gt; print(t1)
-[1, 2, 3]
-&gt;&gt;&gt; print(t2)
-None
+<p>In the first phase we take our input &quot;survey&quot; data in the file <em>where.data</em> and read it one line at a time, and retrieve the geocoded information from Google and store it in a database <em>geodata.sqlite</em>. Before we use the geocoding API for each user-entered location, we simply check to see if we already have the data for that particular line of input. The database is functioning as a local &quot;cache&quot; of our geocoding data to make sure we never ask Google for the same data twice.</p>
+<p>You can restart the process at any time by removing the file <em>geodata.sqlite</em>.</p>
+<p>Run the <em>geoload.py</em> program. This program will read the input lines in <em>where.data</em> and for each line check to see if it is already in the database. If we don't have the data for the location, it will call the geocoding API to retrieve the data and store it in the database.</p>
+<p>Here is a sample run after there is already some data in the database:</p>
+<pre><code>Found in database  Northeastern University
+Found in database  University of Hong Kong, ...
+Found in database  Technion
+Found in database  Viswakarma Institute, Pune, India
+Found in database  UMD
+Found in database  Tufts University
 
-&gt;&gt;&gt; t3 = t1 + [3]
-&gt;&gt;&gt; print(t3)
-[1, 2, 3]
-&gt;&gt;&gt; t2 is t3
-False</code></pre>
-<p>This difference is important when you write functions that are supposed to modify lists. For example, this function <em>does not</em> delete the head of a list:</p>
-<pre><code>def bad_delete_head(t):
-    t = t[1:]              # WRONG!</code></pre>
-<p>The slice operator creates a new list and the assignment makes <code>t</code> refer to it, but none of that has any effect on the list that was passed as an argument.</p>
-<p> </p>
-<p>An alternative is to write a function that creates and returns a new list. For example, <code>tail</code> returns all but the first element of a list:</p>
-<pre><code>def tail(t):
-    return t[1:]</code></pre>
-<p>This function leaves the original list unmodified. Here's how it is used:</p>
-<pre><code>&gt;&gt;&gt; letters = ['a', 'b', 'c']
-&gt;&gt;&gt; rest = tail(letters)
-&gt;&gt;&gt; print(rest)
-['b', 'c']</code></pre>
-<p>Exercise 1:</p>
-<p>Write a function called <code>chop</code> that takes a list and modifies it, removing the first and last elements, and returns <code>None</code>.</p>
-<p>Then write a function called <code>middle</code> that takes a list and returns a new list that contains all but the first and last elements.</p>
-<h2 id="debugging">Debugging</h2>
-<p></p>
-<p>Careless use of lists (and other mutable objects) can lead to long hours of debugging. Here are some common pitfalls and ways to avoid them:</p>
-<ol style="list-style-type: decimal">
-<li><p>Don't forget that most list methods modify the argument and return <code>None</code>. This is the opposite of the string methods, which return a new string and leave the original alone.</p>
-<p>If you are used to writing string code like this:</p>
-<pre><code>word = word.strip()</code></pre>
-<p>It is tempting to write list code like this:</p>
-<pre><code>t = t.sort()           # WRONG!</code></pre></li>
-</ol>
-<p> </p>
-<pre><code>Because `sort` returns `None`, the next
-operation you perform with `t` is likely to fail.
+Resolving Monash University
+Retrieving http://maps.googleapis.com/maps/api/
+    geocode/json?sensor=false&amp;address=Monash+University
+Retrieved 2063 characters {    &quot;results&quot; : [
+{u'status': u'OK', u'results': ... }
 
-Before using list methods and operators, you should read the
-documentation carefully and then test them in interactive mode. The
-methods and operators that lists share with other sequences (like
-strings) are documented at
-&lt;https://docs.python.org/2/library/stdtypes.html#string-methods&gt;.
-The methods and operators that only apply to mutable sequences are
-documented at
-&lt;https://docs.python.org/2/library/stdtypes.html#mutable-sequence-types&gt;.</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>Pick an idiom and stick with it.</li>
-</ol>
-<p></p>
-<pre><code>Part of the problem with lists is that there are too many ways to do
-things. For example, to remove an element from a list, you can use
-`pop`, `remove`, `del`, or even a
-slice assignment.
+Resolving Kokshetau Institute of Economics and Management
+Retrieving http://maps.googleapis.com/maps/api/
+    geocode/json?sensor=false&amp;address=Kokshetau+Inst ...
+Retrieved 1749 characters {    &quot;results&quot; : [
+{u'status': u'OK', u'results': ... }
+...</code></pre>
+<p>The first five locations are already in the database and so they are skipped. The program scans to the point where it finds new locations and starts retrieving them.</p>
+<p>The <em>geoload.py</em> program can be stopped at any time, and there is a counter that you can use to limit the number of calls to the geocoding API for each run. Given that the <em>where.data</em> only has a few hundred data items, you should not run into the daily rate limit, but if you had more data it might take several runs over several days to get your database to have all of the geocoded data for your input.</p>
+<p>Once you have some data loaded into <em>geodata.sqlite</em>, you can visualize the data using the <em>geodump.py</em> program. This program reads the database and writes the file <em>where.js</em> with the location, latitude, and longitude in the form of executable JavaScript code.</p>
+<p>A run of the <em>geodump.py</em> program is as follows:</p>
+<pre><code>Northeastern University, ... Boston, MA 02115, USA 42.3396998 -71.08975
+Bradley University, 1501 ... Peoria, IL 61625, USA 40.6963857 -89.6160811
+...
+Technion, Viazman 87, Kesalsaba, 32000, Israel 32.7775 35.0216667
+Monash University Clayton ... VIC 3800, Australia -37.9152113 145.134682
+Kokshetau, Kazakhstan 53.2833333 69.3833333
+...
+12 records written to where.js
+Open where.html to view the data in a browser</code></pre>
+<p>The file <em>where.html</em> consists of HTML and JavaScript to visualize a Google map. It reads the most recent data in <em>where.js</em> to get the data to be visualized. Here is the format of the <em>where.js</em> file:</p>
+<pre><code>myData = [
+[42.3396998,-71.08975, 'Northeastern Uni ... Boston, MA 02115'],
+[40.6963857,-89.6160811, 'Bradley University, ... Peoria, IL 61625, USA'],
+[32.7775,35.0216667, 'Technion, Viazman 87, Kesalsaba, 32000, Israel'],
+   ...
+];</code></pre>
+<p>This is a JavaScript variable that contains a list of lists. The syntax for JavaScript list constants is very similar to Python, so the syntax should be familiar to you.</p>
+<p>Simply open <em>where.html</em> in a browser to see the locations. You can hover over each map pin to find the location that the geocoding API returned for the user-entered input. If you cannot see any data when you open the <em>where.html</em> file, you might want to check the JavaScript or developer console for your browser.</p>
+<h2 id="visualizing-networks-and-interconnections">Visualizing networks and interconnections</h2>
+<p>  </p>
+<p>In this application, we will perform some of the functions of a search engine. We will first spider a small subset of the web and run a simplified version of the Google page rank algorithm to determine which pages are most highly connected, and then visualize the page rank and connectivity of our small corner of the web. We will use the D3 JavaScript visualization library <a href="http://d3js.org/" class="uri">http://d3js.org/</a> to produce the visualization output.</p>
+<p>You can download and extract this application from:</p>
+<p><a href="www.pythonlearn.com/code3/pagerank.zip" class="uri">www.pythonlearn.com/code3/pagerank.zip</a></p>
+<div class="figure">
+<img src="data:image/svg+xml;base64," alt="image" />
+<p class="caption">image</p>
+</div>
+<p>The first program (<em>spider.py</em>) program crawls a web site and pulls a series of pages into the database (<em>spider.sqlite</em>), recording the links between pages. You can restart the process at any time by removing the <em>spider.sqlite</em> file and rerunning <em>spider.py</em>.</p>
+<pre><code>Enter web url or enter: http://www.dr-chuck.com/
+['http://www.dr-chuck.com']
+How many pages:2
+1 http://www.dr-chuck.com/ 12
+2 http://www.dr-chuck.com/csev-blog/ 57
+How many pages:</code></pre>
+<p>In this sample run, we told it to crawl a website and retrieve two pages. If you restart the program and tell it to crawl more pages, it will not re-crawl any pages already in the database. Upon restart it goes to a random non-crawled page and starts there. So each successive run of <em>spider.py</em> is additive.</p>
+<pre><code>Enter web url or enter: http://www.dr-chuck.com/
+['http://www.dr-chuck.com']
+How many pages:3
+3 http://www.dr-chuck.com/csev-blog 57
+4 http://www.dr-chuck.com/dr-chuck/resume/speaking.htm 1
+5 http://www.dr-chuck.com/dr-chuck/resume/index.htm 13
+How many pages:</code></pre>
+<p>You can have multiple starting points in the same database—within the program, these are called &quot;webs&quot;. The spider chooses randomly amongst all non-visited links across all the webs as the next page to spider.</p>
+<p>If you want to dump the contents of the <em>spider.sqlite</em> file, you can run <em>spdump.py</em> as follows:</p>
+<pre><code>(5, None, 1.0, 3, u'http://www.dr-chuck.com/csev-blog')
+(3, None, 1.0, 4, u'http://www.dr-chuck.com/dr-chuck/resume/speaking.htm')
+(1, None, 1.0, 2, u'http://www.dr-chuck.com/csev-blog/')
+(1, None, 1.0, 5, u'http://www.dr-chuck.com/dr-chuck/resume/index.htm')
+4 rows.</code></pre>
+<p>This shows the number of incoming links, the old page rank, the new page rank, the id of the page, and the url of the page. The <em>spdump.py</em> program only shows pages that have at least one incoming link to them.</p>
+<p>Once you have a few pages in the database, you can run page rank on the pages using the <em>sprank.py</em> program. You simply tell it how many page rank iterations to run.</p>
+<pre><code>How many iterations:2
+1 0.546848992536
+2 0.226714939664
+[(1, 0.559), (2, 0.659), (3, 0.985), (4, 2.135), (5, 0.659)]</code></pre>
+<p>You can dump the database again to see that page rank has been updated:</p>
+<pre><code>(5, 1.0, 0.985, 3, u'http://www.dr-chuck.com/csev-blog')
+(3, 1.0, 2.135, 4, u'http://www.dr-chuck.com/dr-chuck/resume/speaking.htm')
+(1, 1.0, 0.659, 2, u'http://www.dr-chuck.com/csev-blog/')
+(1, 1.0, 0.659, 5, u'http://www.dr-chuck.com/dr-chuck/resume/index.htm')
+4 rows.</code></pre>
+<p>You can run <em>sprank.py</em> as many times as you like and it will simply refine the page rank each time you run it. You can even run <em>sprank.py</em> a few times and then go spider a few more pages sith <em>spider.py</em> and then run <em>sprank.py</em> to reconverge the page rank values. A search engine usually runs both the crawling and ranking programs all the time.</p>
+<p>If you want to restart the page rank calculations without respidering the web pages, you can use <em>spreset.py</em> and then restart <em>sprank.py</em>.</p>
+<pre><code>How many iterations:50
+1 0.546848992536
+2 0.226714939664
+3 0.0659516187242
+4 0.0244199333
+5 0.0102096489546
+6 0.00610244329379
+...
+42 0.000109076928206
+43 9.91987599002e-05
+44 9.02151706798e-05
+45 8.20451504471e-05
+46 7.46150183837e-05
+47 6.7857770908e-05
+48 6.17124694224e-05
+49 5.61236959327e-05
+50 5.10410499467e-05
+[(512, 0.0296), (1, 12.79), (2, 28.93), (3, 6.808), (4, 13.46)]</code></pre>
+<p>For each iteration of the page rank algorithm it prints the average change in page rank per page. The network initially is quite unbalanced and so the individual page rank values change wildly between iterations. But in a few short iterations, the page rank converges. You should run <em>prank.py</em> long enough that the page rank values converge.</p>
+<p>If you want to visualize the current top pages in terms of page rank, run <em>spjson.py</em> to read the database and write the data for the most highly linked pages in JSON format to be viewed in a web browser.</p>
+<pre><code>Creating JSON output on spider.json...
+How many nodes? 30
+Open force.html in a browser to view the visualization</code></pre>
+<p>You can view this data by opening the file <em>force.html</em> in your web browser. This shows an automatic layout of the nodes and links. You can click and drag any node and you can also double-click on a node to find the URL that is represented by the node.</p>
+<p>If you rerun the other utilities, rerun <em>spjson.py</em> and press refresh in the browser to get the new data from <em>spider.json</em>.</p>
+<h2 id="visualizing-mail-data">Visualizing mail data</h2>
+<p>Up to this point in the book, you have become quite familiar with our <em>mbox-short.txt</em> and <em>mbox.txt</em> data files. Now it is time to take our analysis of email data to the next level.</p>
+<p>In the real world, sometimes you have to pull down mail data from servers. That might take quite some time and the data might be inconsistent, error-filled, and need a lot of cleanup or adjustment. In this section, we work with an application that is the most complex so far and pull down nearly a gigabyte of data and visualize it.</p>
+<div class="figure">
+<img src="data:image/svg+xml;base64," alt="image" />
+<p class="caption">image</p>
+</div>
+<p>You can download this application from:</p>
+<p><a href="www.pythonlearn.com/code3/gmane.zip" class="uri">www.pythonlearn.com/code3/gmane.zip</a></p>
+<p>We will be using data from a free email list archiving service called <a href="www.gmane.org" class="uri">www.gmane.org</a>. This service is very popular with open source projects because it provides a nice searchable archive of their email activity. They also have a very liberal policy regarding accessing their data through their API. They have no rate limits, but ask that you don't overload their service and take only the data you need. You can read gmane's terms and conditions at this page:</p>
+<p><a href="http://gmane.org/export.php" class="uri">http://gmane.org/export.php</a></p>
+<p><em>It is very important that you make use of the gmane.org data responsibly by adding delays to your access of their services and spreading long-running jobs over a longer period of time. Do not abuse this free service and ruin it for the rest of us.</em></p>
+<p>When the Sakai email data was spidered using this software, it produced nearly a Gigabyte of data and took a number of runs on several days. The file <em>README.txt</em> in the above ZIP may have instructions as to how you can download a pre-spidered copy of the <em>content.sqlite</em> file for a majority of the Sakai email corpus so you don't have to spider for five days just to run the programs. If you download the pre-spidered content, you should still run the spidering process to catch up with more recent messages.</p>
+<p>The first step is to spider the gmane repository. The base URL is hard-coded in the <em>gmane.py</em> and is hard-coded to the Sakai developer list. You can spider another repository by changing that base url. Make sure to delete the <em>content.sqlite</em> file if you switch the base url.</p>
+<p>The <em>gmane.py</em> file operates as a responsible caching spider in that it runs slowly and retrieves one mail message per second so as to avoid getting throttled by gmane. It stores all of its data in a database and can be interrupted and restarted as often as needed. It may take many hours to pull all the data down. So you may need to restart several times.</p>
+<p>Here is a run of <em>gmane.py</em> retrieving the last five messages of the Sakai developer list:</p>
+<pre><code>How many messages:10
+http://download.gmane.org/gmane.comp.cms.sakai.devel/51410/51411 9460
+    nealcaidin@sakaifoundation.org 2013-04-05 re: [building ...
+http://download.gmane.org/gmane.comp.cms.sakai.devel/51411/51412 3379
+    samuelgutierrezjimenez@gmail.com 2013-04-06 re: [building ...
+http://download.gmane.org/gmane.comp.cms.sakai.devel/51412/51413 9903
+    da1@vt.edu 2013-04-05 [building sakai] melete 2.9 oracle ...
+http://download.gmane.org/gmane.comp.cms.sakai.devel/51413/51414 349265
+    m.shedid@elraed-it.com 2013-04-07 [building sakai] ...
+http://download.gmane.org/gmane.comp.cms.sakai.devel/51414/51415 3481
+    samuelgutierrezjimenez@gmail.com 2013-04-07 re: ...
+http://download.gmane.org/gmane.comp.cms.sakai.devel/51415/51416 0
 
-To add an element, you can use the `append` method or the
-`+` operator. But don't forget that these are right:
+Does not start with From</code></pre>
+<p>The program scans <em>content.sqlite</em> from one up to the first message number not already spidered and starts spidering at that message. It continues spidering until it has spidered the desired number of messages or it reaches a page that does not appear to be a properly formatted message.</p>
+<p>Sometimes <a href="gmane.org" class="uri">gmane.org</a> is missing a message. Perhaps administrators can delete messages or perhaps they get lost. If your spider stops, and it seems it has hit a missing message, go into the SQLite Manager and add a row with the missing id leaving all the other fields blank and restart <em>gmane.py</em>. This will unstick the spidering process and allow it to continue. These empty messages will be ignored in the next phase of the process.</p>
+<p>One nice thing is that once you have spidered all of the messages and have them in <em>content.sqlite</em>, you can run <em>gmane.py</em> again to get new messages as they are sent to the list.</p>
+<p>The <em>content.sqlite</em> data is pretty raw, with an inefficient data model, and not compressed. This is intentional as it allows you to look at <em>content.sqlite</em> in the SQLite Manager to debug problems with the spidering process. It would be a bad idea to run any queries against this database, as they would be quite slow.</p>
+<p>The second process is to run the program <em>gmodel.py</em>. This program reads the raw data from <em>content.sqlite</em> and produces a cleaned-up and well-modeled version of the data in the file <em>index.sqlite</em>. This file will be much smaller (often 10X smaller) than <em>content.sqlite</em> because it also compresses the header and body text.</p>
+<p>Each time <em>gmodel.py</em> runs it deletes and rebuilds <em>index.sqlite</em>, allowing you to adjust its parameters and edit the mapping tables in <em>content.sqlite</em> to tweak the data cleaning process. This is a sample run of <em>gmodel.py</em>. It prints a line out each time 250 mail messages are processed so you can see some progress happening, as this program may run for a while processing nearly a Gigabyte of mail data.</p>
+<pre><code>Loaded allsenders 1588 and mapping 28 dns mapping 1
+1 2005-12-08T23:34:30-06:00 ggolden22@mac.com
+251 2005-12-22T10:03:20-08:00 tpamsler@ucdavis.edu
+501 2006-01-12T11:17:34-05:00 lance@indiana.edu
+751 2006-01-24T11:13:28-08:00 vrajgopalan@ucmerced.edu
+...</code></pre>
+<p>The <em>gmodel.py</em> program handles a number of data cleaning tasks.</p>
+<p>Domain names are truncated to two levels for .com, .org, .edu, and .net. Other domain names are truncated to three levels. So si.umich.edu becomes umich.edu and caret.cam.ac.uk becomes cam.ac.uk. Email addresses are also forced to lower case, and some of the <span class="citation">@gmane.org</span> address like the following</p>
+<pre><code>   arwhyte-63aXycvo3TyHXe+LvDLADg@public.gmane.org</code></pre>
+<p>are converted to the real address whenever there is a matching real email address elsewhere in the message corpus.</p>
+<p>In the <em>content.sqlite</em> database there are two tables that allow you to map both domain names and individual email addresses that change over the lifetime of the email list. For example, Steve Githens used the following email addresses as he changed jobs over the life of the Sakai developer list:</p>
+<pre><code>s-githens@northwestern.edu
+sgithens@cam.ac.uk
+swgithen@mtu.edu</code></pre>
+<p>We can add two entries to the Mapping table in <em>content.sqlite</em> so <em>gmodel.py</em> will map all three to one address:</p>
+<pre><code>s-githens@northwestern.edu -&gt;  swgithen@mtu.edu
+sgithens@cam.ac.uk -&gt; swgithen@mtu.edu</code></pre>
+<p>You can also make similar entries in the DNSMapping table if there are multiple DNS names you want mapped to a single DNS. The following mapping was added to the Sakai data:</p>
+<pre><code>iupui.edu -&gt; indiana.edu</code></pre>
+<p>so all the accounts from the various Indiana University campuses are tracked together.</p>
+<p>You can rerun the <em>gmodel.py</em> over and over as you look at the data, and add mappings to make the data cleaner and cleaner. When you are done, you will have a nicely indexed version of the email in <em>index.sqlite</em>. This is the file to use to do data analysis. With this file, data analysis will be really quick.</p>
+<p>The first, simplest data analysis is to determine &quot;who sent the most mail?&quot; and &quot;which organization sent the most mail&quot;? This is done using <em>gbasic.py</em>:</p>
+<pre><code>How many to dump? 5
+Loaded messages= 51330 subjects= 25033 senders= 1584
 
-    t.append(x)
-    t = t + [x]
+Top 5 Email list participants
+steve.swinsburg@gmail.com 2657
+azeckoski@unicon.net 1742
+ieb@tfd.co.uk 1591
+csev@umich.edu 1304
+david.horwitz@uct.ac.za 1184
 
-And these are wrong:
-
-    t.append([x])          # WRONG!
-    t = t.append(x)        # WRONG!
-    t + [x]                # WRONG!
-    t = t + x              # WRONG!
-
-Try out each of these examples in interactive mode to make sure you
-understand what they do. Notice that only the last one causes a
-runtime error; the other three are legal, but they do the wrong
-thing.</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>Make copies to avoid aliasing.</li>
-</ol>
-<p> </p>
-<pre><code>If you want to use a method like `sort` that modifies the
-argument, but you need to keep the original list as well, you can
-make a copy.
-
-    orig = t[:]
-    t.sort()
-
-In this example you could also use the built-in function
-`sorted`, which returns a new, sorted list and leaves the
-original alone. But in that case you should avoid using
-`sorted` as a variable name!</code></pre>
-<ol start="4" style="list-style-type: decimal">
-<li><p>Lists, <code>split</code>, and files</p>
-<p>When we read and parse files, there are many opportunities to encounter input that can crash our program so it is a good idea to revisit the <em>guardian</em> pattern when it comes writing programs that read through a file and look for a &quot;needle in the haystack&quot;.</p>
-<p>Let's revisit our program that is looking for the day of the week on the from lines of our file:</p>
-<p><code>From stephen.marquard@uct.ac.za </code><em><code> Sat</code></em><code> Jan  5 09:14:16 2008</code></p>
-<p>Since we are breaking this line into words, we could dispense with the use of <code>startswith</code> and simply look at the first word of the line to determine if we are interested in the line at all. We can use <code>continue</code> to skip lines that don't have &quot;From&quot; as the first word as follows:</p>
-<pre><code>fhand = open('mbox-short.txt')
-for line in fhand:
-    words = line.split()
-    if words[0] != 'From' : continue
-    print(words[2])</code></pre>
-<p>This looks much simpler and we don't even need to do the <code>rstrip</code> to remove the newline at the end of the file. But is it better?</p>
-<pre><code>python search8.py
-Sat
-Traceback (most recent call last):
-  File &quot;search8.py&quot;, line 5, in &lt;module&gt;
-    if words[0] != 'From' : continue
-IndexError: list index out of range</code></pre>
-<p>It kind of works and we see the day from the first line (Sat), but then the program fails with a traceback error. What went wrong? What messed-up data caused our elegant, clever, and very Pythonic program to fail?</p>
-<p>You could stare at it for a long time and puzzle through it or ask someone for help, but the quicker and smarter approach is to add a <code>print</code> statement. The best place to add the print statement is right before the line where the program failed and print out the data that seems to be causing the failure.</p>
-<p>Now this approach may generate a lot of lines of output, but at least you will immediately have some clue as to the problem at hand. So we add a print of the variable <code>words</code> right before line five. We even add a prefix &quot;Debug:&quot; to the line so we can keep our regular output separate from our debug output.</p>
-<pre><code>for line in fhand:
-    words = line.split()
-    print('Debug:', words)
-    if words[0] != 'From' : continue
-    print(words[2])</code></pre>
-<p>When we run the program, a lot of output scrolls off the screen but at the end, we see our debug output and the traceback so we know what happened just before the traceback.</p>
-<pre><code>Debug: ['X-DSPAM-Confidence:', '0.8475']
-Debug: ['X-DSPAM-Probability:', '0.0000']
-Debug: []
-Traceback (most recent call last):
-  File &quot;search9.py&quot;, line 6, in &lt;module&gt;
-    if words[0] != 'From' : continue
-IndexError: list index out of range</code></pre>
-<p>Each debug line is printing the list of words which we get when we <code>split</code> the line into words. When the program fails, the list of words is empty <code>[]</code>. If we open the file in a text editor and look at the file, at that point it looks as follows:</p>
-<pre><code>X-DSPAM-Result: Innocent
-X-DSPAM-Processed: Sat Jan  5 09:14:16 2008
-X-DSPAM-Confidence: 0.8475
-X-DSPAM-Probability: 0.0000
-
-Details: http://source.sakaiproject.org/viewsvn/?view=rev&amp;rev=39772</code></pre>
-<p>The error occurs when our program encounters a blank line! Of course there are &quot;zero words&quot; on a blank line. Why didn't we think of that when we were writing the code? When the code looks for the first word (<code>word[0]</code>) to check to see if it matches &quot;From&quot;, we get an &quot;index out of range&quot; error.</p>
-<p>This of course is the perfect place to add some <em>guardian</em> code to avoid checking the first word if the first word is not there. There are many ways to protect this code; we will choose to check the number of words we have before we look at the first word:</p>
-<pre><code>fhand = open('mbox-short.txt')
-count = 0
-for line in fhand:
-    words = line.split()
-    # print 'Debug:', words
-    if len(words) == 0 : continue
-    if words[0] != 'From' : continue
-    print(words[2])</code></pre>
-<p>First we commented out the debug print statement instead of removing it, in case our modification fails and we need to debug again. Then we added a guardian statement that checks to see if we have zero words, and if so, we use <code>continue</code> to skip to the next line in the file.</p>
-<p>We can think of the two <code>continue</code> statements as helping us refine the set of lines which are &quot;interesting&quot; to us and which we want to process some more. A line which has no words is &quot;uninteresting&quot; to us so we skip to the next line. A line which does not have &quot;From&quot; as its first word is uninteresting to us so we skip it.</p>
-<p>The program as modified runs successfully, so perhaps it is correct. Our guardian statement does make sure that the <code>words[0]</code> will never fail, but perhaps it is not enough. When we are programming, we must always be thinking, &quot;What might go wrong?&quot;</p>
-<p>Exercise 2: Figure out which line of the above program is still not properly guarded. See if you can construct a text file which causes the program to fail and then modify the program so that the line is properly guarded and test it to make sure it handles your new text file.</p>
-<p>Exercise 3: Rewrite the guardian code in the above example without two <code>if</code> statements. Instead, use a compound logical expression using the <code>and</code> logical operator with a single <code>if</code> statement.</p></li>
-</ol>
-<h2 id="glossary">Glossary</h2>
-<dl>
-<dt>aliasing</dt>
-<dd>A circumstance where two or more variables refer to the same object. 
-</dd>
-<dt>delimiter</dt>
-<dd>A character or string used to indicate where a string should be split. 
-</dd>
-<dt>element</dt>
-<dd>One of the values in a list (or other sequence); also called items. 
-</dd>
-<dt>equivalent</dt>
-<dd>Having the same value. 
-</dd>
-<dt>index</dt>
-<dd>An integer value that indicates an element in a list.  
-</dd>
-<dt>identical</dt>
-<dd>Being the same object (which implies equivalence). 
-</dd>
-<dt>list</dt>
-<dd>A sequence of values. 
-</dd>
-<dt>list traversal</dt>
-<dd>The sequential accessing of each element in a list. 
-</dd>
-<dt>nested list</dt>
-<dd>A list that is an element of another list. 
-</dd>
-<dt>object</dt>
-<dd>Something a variable can refer to. An object has a type and a value. 
-</dd>
-<dt>reference</dt>
-<dd>The association between a variable and its value. 
-</dd>
-</dl>
-<h2 id="exercises">Exercises</h2>
-<p>Exercise 4: Download a copy of the file from <a href="www.pythonlearn.com/code3/romeo.txt" class="uri">www.pythonlearn.com/code3/romeo.txt</a></p>
-<p></p>
-<p>Write a program to open the file <code>romeo.txt</code> and read it line by line. For each line, split the line into a list of words using the <code>split</code> function.</p>
-<p>For each word, check to see if the word is already in a list. If the word is not in the list, add it to the list.</p>
-<p>When the program completes, sort and print the resulting words in alphabetical order.</p>
-<pre><code>Enter file: romeo.txt
-['Arise', 'But', 'It', 'Juliet', 'Who', 'already',
-'and', 'breaks', 'east', 'envious', 'fair', 'grief',
-'is', 'kill', 'light', 'moon', 'pale', 'sick', 'soft',
-'sun', 'the', 'through', 'what', 'window',
-'with', 'yonder']</code></pre>
-<p>Exercise 5: Write a program to read through the mail box data and when you find line that starts with &quot;From&quot;, you will split the line into words using the <code>split</code> function. We are interested in who sent the message, which is the second word on the From line.</p>
-<p><code>From stephen.marquard@uct.ac.za Sat Jan 5 09:14:16 2008</code></p>
-<p>You will parse the From line and print out the second word for each From line, then you will also count the number of From (not From:) lines and print out a count at the end.</p>
-<p>This is a good sample output with a few lines removed:</p>
-<pre><code>python fromcount.py
-Enter a file name: mbox-short.txt
-stephen.marquard@uct.ac.za
-louis@media.berkeley.edu
-zqian@umich.edu
-
-[...some output removed...]
-
-ray@media.berkeley.edu
-cwen@iupui.edu
-cwen@iupui.edu
-cwen@iupui.edu
-There were 27 lines in the file with From as the first word</code></pre>
-<p>Exercise 6: Rewrite the program that prompts the user for a list of numbers and prints out the maximum and minimum of the numbers at the end when the user enters &quot;done&quot;. Write the program to store the numbers the user enters in a list and use the <code>max()</code> and <code>min()</code> functions to compute the maximum and minimum numbers after the loop completes.</p>
-<pre><code>Enter a number: 6
-Enter a number: 2
-Enter a number: 9
-Enter a number: 3
-Enter a number: 5
-Enter a number: done
-Maximum: 9.0
-Minimum: 2.0</code></pre>
+Top 5 Email list organizations
+gmail.com 7339
+umich.edu 6243
+uct.ac.za 2451
+indiana.edu 2258
+unicon.net 2055</code></pre>
+<p>Note how much more quickly <em>gbasic.py</em> runs compared to <em>gmane.py</em> or even <em>gmodel.py</em>. They are all working on the same data, but <em>gbasic.py</em> is using the compressed and normalized data in <em>index.sqlite</em>. If you have a lot of data to manage, a multistep process like the one in this application may take a little longer to develop, but will save you a lot of time when you really start to explore and visualize your data.</p>
+<p>You can produce a simple visualization of the word frequency in the subject lines in the file <em>gword.py</em>:</p>
+<pre><code>Range of counts: 33229 129
+Output written to gword.js</code></pre>
+<p>This produces the file <em>gword.js</em> which you can visualize using <em>gword.htm</em> to produce a word cloud similar to the one at the beginning of this section.</p>
+<p>A second visualization is produced by <em>gline.py</em>. It computes email participation by organizations over time.</p>
+<pre><code>Loaded messages= 51330 subjects= 25033 senders= 1584
+Top 10 Oranizations
+['gmail.com', 'umich.edu', 'uct.ac.za', 'indiana.edu',
+'unicon.net', 'tfd.co.uk', 'berkeley.edu', 'longsight.com',
+'stanford.edu', 'ox.ac.uk']
+Output written to gline.js</code></pre>
+<p>Its output is written to <em>gline.js</em> which is visualized using <em>gline.htm</em>. <img src="data:image/svg+xml;base64," alt="image" /></p>
+<p>This is a relatively complex and sophisticated application and has features to do some real data retrieval, cleaning, and visualization.</p>
 </div>
 </div>
 </div>
